@@ -1,6 +1,7 @@
 'use client'
 import { useYupValidationResolver } from '@/hook/useValidationResolver';
 import axiosInstance from '@/lib/axios';
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 
@@ -14,6 +15,7 @@ type FormData = {
 };
 
 export default function Create() {
+    const router = useRouter()
     const validationSchema = yup.object({
         hours: yup.number().typeError('you must specify a number').required("Required"),
         minutes: yup.number().typeError('you must specify a number').required("Required"),
@@ -31,7 +33,6 @@ export default function Create() {
         formState: { errors },
     } = useForm<FormData>({ resolver });
     const createNewHookCaller = async (data) => {
-        console.log(data)
         axiosInstance.post("/hooks-caller", data).then((res) => {
             console.log(res)
         }).catch((err) => {
@@ -41,13 +42,21 @@ export default function Create() {
     return (
         <div className="py-16 bg-gray-50 overflow-hidden lg:py-24">
             <div className="relative max-w-xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-7xl">
+                <div className="sm:flex sm:items-center mb-4">
+                    <div className="sm:flex-auto">
+                        <h1 className="text-xl font-semibold text-gray-900">Create new</h1>
+                        <p className="mt-2 text-sm text-gray-700">Create new hook caller.</p>
+                    </div>
+                    <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                        <button type="button" onClick={() => {
+                            router.push('/')
+                        }} className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Lists</button>
+                    </div>
+                </div>
                 <div className="mt-5 md:mt-0 md:col-span-2">
                     <form onSubmit={handleSubmit(createNewHookCaller)}>
                         <div className="shadow overflow-hidden sm:rounded-md">
                             <div className="px-4 py-5 bg-white sm:p-6">
-                                <div>
-                                    <h3 className="text-lg leading-6 font-medium text-gray-900 mb-3">Create New HookCaller</h3>
-                                </div>
                                 <div className="grid grid-cols-6 gap-6">
                                     <div className="col-span-6 sm:col-span-3">
                                         <label htmlFor="hours" className="block text-sm font-medium text-gray-700">
