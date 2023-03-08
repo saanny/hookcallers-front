@@ -22,10 +22,11 @@ To run this project, you will need to add the following environment variables to
 
 `NODE_ENV` development or production
 
-`NEXT_PUBLIC_API` for running api, In .env.example http://localhost:8000/api/v1
+`NEXT_PUBLIC_API` for api connection, In .env.example http://localhost:8000/api/v1
 
 
 ## Tech Stack
 
-Next.js
+Next.js, Tailwind CSS
+
 
