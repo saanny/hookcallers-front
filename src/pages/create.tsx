@@ -1,7 +1,10 @@
 'use client'
 import { useYupValidationResolver } from '@/hook/useValidationResolver';
 import axiosInstance from '@/lib/axios';
+import { InformationCircleIcon } from '@heroicons/react/solid';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 
@@ -15,6 +18,8 @@ type FormData = {
 };
 
 export default function Create() {
+    const [id, setId] = useState<number>();
+
     const router = useRouter()
     const validationSchema = yup.object({
         hours: yup.number().typeError('you must specify a number').required("Required"),
@@ -34,18 +39,24 @@ export default function Create() {
     } = useForm<FormData>({ resolver });
     const createNewHookCaller = async (data) => {
         axiosInstance.post("/hooks-caller", data).then((res) => {
-            console.log(res)
+            console.log(res.data.id)
+            setId(res.data.id);
         }).catch((err) => {
             console.log(err)
         })
     }
     return (
+
         <div className="py-16 bg-gray-50 overflow-hidden lg:py-24">
+            <Head>
+                <title>Create page</title>
+            </Head>
             <div className="relative max-w-xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-7xl">
                 <div className="sm:flex sm:items-center mb-4">
                     <div className="sm:flex-auto">
                         <h1 className="text-xl font-semibold text-gray-900">Create new</h1>
                         <p className="mt-2 text-sm text-gray-700">Create new hook caller.</p>
+
                     </div>
                     <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
                         <button type="button" onClick={() => {
@@ -54,9 +65,23 @@ export default function Create() {
                     </div>
                 </div>
                 <div className="mt-5 md:mt-0 md:col-span-2">
+
                     <form onSubmit={handleSubmit(createNewHookCaller)}>
                         <div className="shadow overflow-hidden sm:rounded-md">
                             <div className="px-4 py-5 bg-white sm:p-6">
+                                {id ? (
+                                    <div className="rounded-md bg-blue-50 p-4">
+                                        <div className="flex">
+                                            <div className="flex-shrink-0">
+                                                <InformationCircleIcon className="h-5 w-5 text-blue-400" aria-hidden="true" />
+                                            </div>
+                                            <div className="ml-3 flex-1 md:flex md:justify-between">
+                                                <p className="text-sm text-blue-700">HookCaller created successfully with id {id}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : null}
+
                                 <div className="grid grid-cols-6 gap-6">
                                     <div className="col-span-6 sm:col-span-3">
                                         <label htmlFor="hours" className="block text-sm font-medium text-gray-700">

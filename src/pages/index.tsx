@@ -2,6 +2,7 @@ import Table from "@/components/Table";
 import axiosInstance from "@/lib/axios";
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router'
+import Head from "next/head";
 
 
 
@@ -41,6 +42,9 @@ const index = () => {
     const data = React.useMemo(() => hooksCallers, [hooksCallers])
     return (
         <div className="py-16 bg-gray-50 overflow-hidden lg:py-24">
+            <Head>
+                <title>Index page</title>
+            </Head>
             <div className="relative max-w-xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-7xl">
                 <div className="sm:flex sm:items-center mb-4">
                     <div className="sm:flex-auto">
